@@ -61,3 +61,6 @@ class CommentListViewSet(viewsets.ModelViewSet):
     def perform_destroy(self, instance):
         if instance.author != self.request.user:
             raise PermissionDenied('Изменение чужого контента запрещено!')
+        comment = get_object_or_404(Comment, id=instance.id)
+        comment.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
