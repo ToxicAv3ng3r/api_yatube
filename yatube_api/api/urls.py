@@ -6,8 +6,8 @@ from rest_framework.authtoken import views
 from .views import PostListViewSet, GroupListViewSet, CommentListViewSet
 
 router = SimpleRouter()
-router.register('v1/posts', PostListViewSet)
-router.register('v1/groups', GroupListViewSet)
+router.register('v1/posts', PostListViewSet, basename='post')
+router.register('v1/groups', GroupListViewSet, basename='group')
 router.register(
     r'v1/posts/(?P<post_id>\d+)/comments',
     CommentListViewSet,
