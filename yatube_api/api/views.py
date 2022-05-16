@@ -1,18 +1,12 @@
 from django.shortcuts import get_object_or_404
 
 from rest_framework.exceptions import PermissionDenied
-from rest_framework import mixins, viewsets
+from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import status
 
 from .serializers import PostSerializer, GroupSerializer, CommentSerializer
 from posts.models import Post, Group, Comment
-
-
-class ListRetrieveViewSet(mixins.ListModelMixin,
-                          mixins.RetrieveModelMixin,
-                          viewsets.GenericViewSet):
-    pass
 
 
 class PostListViewSet(viewsets.ModelViewSet):
@@ -35,7 +29,7 @@ class PostListViewSet(viewsets.ModelViewSet):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class GroupListViewSet(ListRetrieveViewSet):
+class GroupListViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
 
@@ -44,8 +38,10 @@ class CommentListViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
 
     def get_queryset(self):
-        post_id = self.kwargs.get('post_id')
-        queryset = Comment.objects.filter(post=post_id)
+        #  post_id = self.kwargs.get('post_id')
+        post = get_object_or_404(Post, id=self.kwargs.get('post_id'))
+        #  queryset = Comment.objects.filter(post=post_id)
+        queryset = post.comments.all()
         return queryset
 
     def perform_create(self, serializer):

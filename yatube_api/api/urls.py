@@ -6,16 +6,16 @@ from rest_framework.authtoken import views
 from .views import PostListViewSet, GroupListViewSet, CommentListViewSet
 
 router = SimpleRouter()
-router.register(r'posts', PostListViewSet)
-router.register(r'groups', GroupListViewSet)
+router.register('v1/posts', PostListViewSet)
+router.register('v1/groups', GroupListViewSet)
 router.register(
-    r'posts/(?P<post_id>\d+)/comments',
+    r'v1/posts/(?P<post_id>\d+)/comments',
     CommentListViewSet,
     basename='comment'
 )
 
 
 urlpatterns = [
-    path('api-token-auth/', views.obtain_auth_token),
+    path('v1/api-token-auth/', views.obtain_auth_token),
     path('', include(router.urls))
 ]
