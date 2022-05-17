@@ -8,7 +8,7 @@ class PostSerializer(serializers.ModelSerializer):
         queryset=Group.objects.all(),
         required=False
     )
-    author = serializers.CharField(
+    author = serializers.StringRelatedField(
         source='author.username',
         read_only=True
     )
